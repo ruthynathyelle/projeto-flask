@@ -1,0 +1,82 @@
+<!-- O arquivo atualizar_cliente.html estende (herda) o layout base definido no base.html -->
+{% extends 'base.html' %}
+
+<!-- Dentro do bloco 'head', nós definimos o título da página -->
+{% block head %}
+    <title>Atualizar Cliente</title>
+{% endblock %}
+
+<!-- No bloco 'body', nós colocamos o conteúdo principal da página -->
+{% block body %}
+    <!-- Título da página -->
+    <h3>Atualizar Cliente</h3>
+
+    <!-- Início do formulário para atualizar um cliente -->
+    <!-- A ação do formulário é definida para apontar para a rota 'editar_cliente', passando o 'id' do cliente como parâmetro -->
+    <form action="{{ url_for('editar_cliente', id=cliente.id) }}" method="POST">
+        <!-- Início do grupo de input para o nome -->
+        <div class='mb-3'>
+            <label for='nome' class='form-label'>Nome</label>
+            <input class='form-control' type='text' name='nome' id='nome' value='{{ cliente.nome }}' required autofocus />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='cpf' class='form-label'>CPF</label>
+            <input class='form-control' type='text' name='cpf' id='cpf' value='{{ cliente.cpf }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='logradouro' class='form-label'>Logradouro</label>
+            <input class='form-control' type='text' name='logradouro' id='logradouro' value='{{ cliente.logradouro }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='numero' class='form-label'>Número</label>
+            <input class='form-control' type='text' name='numero' id='numero' value='{{ cliente.numero }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='complemento' class='form-label'>Complemento</label>
+            <input class='form-control' type='text' name='complemento' id='complemento' value='{{ cliente.complemento }}' />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='bairro' class='form-label'>Bairro</label>
+            <input class='form-control' type='text' name='bairro' id='bairro' value='{{ cliente.bairro }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='cep' class='form-label'>CEP</label>
+            <input class='form-control' type='text' name='cep' id='cep' value='{{ cliente.cep }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='cidade' class='form-label'>Cidade</label>
+            <input class='form-control' type='text' name='cidade' id='cidade' value='{{ cliente.cidade }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='uf' class='form-label'>UF</label>
+            <input class='form-control' type='text' name='uf' id='uf' value='{{ cliente.uf }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='telefone' class='form-label'>Telefone</label>
+            <input class='form-control' type='text' name='telefone' id='telefone' value='{{ cliente.telefone }}' required />
+        </div>
+        
+        <div class='mb-3'>
+            <label for='email' class='form-label'>Email</label>
+            <input class='form-control' type='email' name='email' id='email' value='{{ cliente.email }}' required />
+        </div>
+
+        <!-- Início do grupo de input para o botão de atualizar -->
+        <div class='mb-3'>
+            <!-- Botão para enviar o formulário -->
+            <button type='submit' class='btn btn-primary mb-3'>Atualizar</button>
+        </div>
+        <!-- Fim do grupo de input para o botão de atualizar -->
+    </form>
+    <!-- Fim do formulário para atualizar um cliente -->
+{% endblock %}
+<!-- Fim do bloco 'body' -->

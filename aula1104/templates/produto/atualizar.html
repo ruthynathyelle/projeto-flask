@@ -1,0 +1,44 @@
+<!-- O arquivo atualizar.html estende (herda) o layout base definido no base.html -->
+{% extends 'base.html' %}
+
+<!-- Dentro do bloco 'head', nós definimos o título da página -->
+{% block head %}
+    <title>Atualizar Produto</title>
+{% endblock %}
+
+<!-- No bloco 'body', nós colocamos o conteúdo principal da página -->
+{% block body %}
+    <!-- Título da página -->
+    <h3>Atualizar Produto</h3>
+
+    <!-- Início do formulário para atualizar um produto -->
+    <!-- A ação do formulário é definida para apontar para a rota 'editar_produto', passando o 'id' do produto como parâmetro -->
+    <form action="{{ url_for('editar_produto', id=produto.id) }}" method="POST">
+        <!-- Início do grupo de input para a descrição -->
+        <div class='mb-3'>
+            <!-- Rótulo para o campo de descrição -->
+            <label for='descricao' class='form-label'>Descrição</label>
+            <!-- Campo de entrada para a descrição com o valor inicial definido como a descrição do produto -->
+            <input class='form-control' type='text' name='descricao' id='descricao' value='{{ produto.descricao }}' required autofocus />
+        </div>
+        <!-- Fim do grupo de input para a descrição -->
+
+        <!-- Início do grupo de input para o preço -->
+        <div class='mb-3'>
+            <!-- Rótulo para o campo de preço -->
+            <label for='preco' class='form-label'>Preço</label>
+            <!-- Campo de entrada para o preço com o valor inicial definido como o preço do produto -->
+            <input class='form-control' type='text' name='preco' id='preco' value='{{ produto.preco }}' required />
+        </div>
+        <!-- Fim do grupo de input para o preço -->
+
+        <!-- Início do grupo de input para o botão de atualizar -->
+        <div class='mb-3'>
+            <!-- Botão para enviar o formulário -->
+            <button type='submit' class='btn btn-primary mb-3'>Atualizar</button>
+        </div>
+        <!-- Fim do grupo de input para o botão de atualizar -->
+    </form>
+    <!-- Fim do formulário para atualizar um produto -->
+{% endblock %}
+<!-- Fim do bloco 'body' -->

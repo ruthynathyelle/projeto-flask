@@ -1,0 +1,3 @@
+"""
+O arquivo init.py 
+"""

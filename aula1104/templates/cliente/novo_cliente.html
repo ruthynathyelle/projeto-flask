@@ -1,0 +1,145 @@
+<!-- Estende o layout base.html -->
+{% extends 'base.html' %}
+
+<!-- Início do bloco head, que substituirá o bloco head em base.html -->
+{% block head %}
+    <!-- Define o título da página -->
+    <title>Adicionar Novo Cliente</title>
+{% endblock %}
+
+<!-- Início do bloco body, que substituirá o bloco body em base.html -->
+{% block body %}
+    <!-- Define o cabeçalho da página -->
+    <h3>Adicionar Novo Cliente</h3>
+
+    <!-- Começa o bloco para exibir mensagens flash, se houver -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        <script>
+            $(".alert").delay(5000).slideUp(200, function() {
+                $(this).alert('close');
+            });
+        </script>
+    {% endif %}
+{% endwith %}
+
+    <!-- Define o formulário para adicionar um novo cliente -->
+    <form action="{{ url_for('novo_cliente') }}" method="POST" autocomplete='off'>
+        <!-- Campo para o nome do cliente -->
+        <div class='mb-3'>
+            <label for='nome' class='form-label'>Nome</label>
+            <input class='form-control' type='text' name='nome' id='nome' placeholder='Informe o nome do cliente' required autofocus />
+        </div>
+
+        <!-- Campo para o CPF do cliente -->
+        <div class='mb-3'>
+            <label for='cpf' class='form-label'>CPF</label>
+            <input class='form-control' type='text' name='cpf' id='cpf' placeholder='Informe o CPF do cliente' required />
+        </div>
+
+        <!-- Campo para o logradouro do cliente -->
+        <div class='mb-3'>
+            <label for='logradouro' class='form-label'>Logradouro</label>
+            <input class='form-control' type='text' name='logradouro' id='logradouro' placeholder='Informe o logradouro do cliente' required />
+        </div>
+
+        <!-- Campo para o número do endereço do cliente -->
+        <div class='mb-3'>
+            <label for='numero' class='form-label'>Número</label>
+            <input class='form-control' type='text' name='numero' id='numero' placeholder='Informe o número do endereço' required />
+        </div>
+
+        <!-- Campo para o complemento do endereço do cliente -->
+        <div class='mb-3'>
+            <label for='complemento' class='form-label'>Complemento</label>
+            <input class='form-control' type='text' name='complemento' id='complemento' placeholder='Informe o complemento do endereço (opcional)' />
+        </div>
+
+        <!-- Campo para o bairro do cliente -->
+        <div class='mb-3'>
+            <label for='bairro' class='form-label'>Bairro</label>
+            <input class='form-control' type='text' name='bairro' id='bairro' placeholder='Informe o bairro do cliente' required />
+        </div>
+
+        <!-- Campo para o CEP do cliente -->
+        <div class='mb-3'>
+            <label for='cep' class='form-label'>CEP</label>
+            <input class='form-control' type='text' name='cep' id='cep' placeholder='Informe o CEP do cliente' required />
+        </div>
+
+        <!-- Campo para a cidade do cliente -->
+        <div class='mb-3'>
+            <label for='cidade' class='form-label'>Cidade</label>
+            <input class='form-control' type='text' name='cidade' id='cidade' placeholder='Informe a cidade do cliente' required />
+        </div>
+
+        <!-- Campo para a UF do cliente -->
+        <div class='mb-3'>
+            <label for='uf' class='form-label'>UF</label>
+            <input class='form-control' type='text' name='uf' id='uf' placeholder='Informe a UF do cliente' required />
+        </div>
+
+        <!-- Campo para o telefone do cliente -->
+        <div class='mb-3'>
+            <label for='telefone' class='form-label'>Telefone</label>
+            <input class='form-control' type='text' name='telefone' id='telefone' placeholder='Informe o telefone do cliente' required />
+        </div>
+
+        <!-- Campo para o email do cliente -->
+        <div class='mb-3'>
+            <label for='email' class='form-label'>Email</label>
+            <input class='form-control' type='email' name='email' id='email' placeholder='Informe o email do cliente' required />
+        </div>
+
+        <!-- Botão para enviar o formulário -->
+        <div class='mb-3'>
+            <button type='submit' class='btn btn-primary mb-3'>Cadastrar</button>
+        </div>
+    </form>
+
+    <!-- Define o cabeçalho para a lista de clientes -->
+    <h3>Clientes Cadastrados</h3>
+
+    <!-- Define a tabela para mostrar os clientes cadastrados -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop para cada cliente na lista de clientes -->
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.cpf }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <!-- Verifica se o status do cliente é 1 (ativo), caso contrário, o status é 0 (inativo) -->
+                    <td>{{ 'Ativo' if cliente.status == 1 else 'Desativado' }}</td>
+                    <td>
+                        <!-- Link para a rota atualizar_cliente, passando o id e o status do cliente -->
+                        <a href="{{ url_for('atualizar_cliente', id=cliente.id, status=1 if cliente.status==0 else 0) }}" class="btn btn-warning btn-sm">
+                            {{ 'Ativar' if cliente.status==0 else 'Desativar' }}
+                        </a>
+                        <!-- Link para a rota editar_cliente, passando o id do cliente -->
+                        <a href="{{ url_for('editar_cliente', id=cliente.id) }}" class="btn btn-primary btn-sm">Editar</a>
+                        <!-- Link para a rota deletar_cliente, passando o id do cliente -->
+                        <a href="{{ url_for('deletar_cliente', id=cliente.id) }}" class="btn btn-danger btn-sm">Deletar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

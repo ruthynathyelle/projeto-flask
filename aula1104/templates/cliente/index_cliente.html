@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title> --- Listagem de Clientes --- </title>
+{% endblock %}
+
+{% block body %}
+    {% if clientes %}
+        <h3> --- Clientes --- </h3>
+        <table class="table">
+            <tr>
+                <td>ID</td>
+                <td>Nome</td>
+                <td>Email</td>
+                <td>Telefone</td>
+                <td>Atualizar</td>
+                <td>Deletar</td>
+            </tr>
+
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente[0] }}</td>
+                    <td>{{ cliente[1] }}</td>
+                    <td>{{ cliente[2] }}</td>
+                    <td>{{ cliente[3] }}</td>
+                    
+                    <td><a class='btn btn-warning' href='{{ url_for('atualizar_cliente', id=cliente[0]) }}'>Atualizar</a></td>
+                    <td><a class='btn btn-success' href='{{ url_for('atualizar_cliente', id=cliente[0], status=1) }}'>Ativar</a></td>
+                    <td><a class='btn btn-danger' href='{{ url_for('deletar_cliente', id=cliente[0]) }}'>Deletar</a></td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h3>Ainda não existem clientes cadastrados...</h3>
+    {% endif %}
+
+    <div>
+        <h3><a class='btn btn-primary' href='{{ url_for('novo_cliente') }}'>Adicionar Cliente</a></h3>
+    </div>
+{% endblock %}

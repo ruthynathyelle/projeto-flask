@@ -1,0 +1,96 @@
+
+<!-- Estende o layout base.html -->
+{% extends 'base.html' %}
+
+<!-- Início do bloco head, que substituirá o bloco head em base.html -->
+{% block head %}
+    <!-- Define o título da página -->
+    <title>Adicionar Novo Produto</title>
+{% endblock %}
+
+<!-- Início do bloco body, que substituirá o bloco body em base.html -->
+{% block body %}
+    <!-- Define o cabeçalho da página -->
+    <h3>Adicionar Novo Produto</h3>
+
+    <!-- Começa o bloco para exibir mensagens flash, se houver -->
+    {% with messages = get_flashed_messages() %}
+        <!-- Verifica se há mensagens para mostrar -->
+        {% if messages %}
+            <!-- Define a estrutura da mensagem, incluindo um botão para fechar a mensagem -->
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <!-- Mostra a primeira mensagem flash -->
+                {{ messages[0] }}
+                <!-- Define o botão para fechar a mensagem -->
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <!-- Define um script para fechar a mensagem automaticamente após um certo tempo -->
+            <script>
+                $(".alert").delay(5000).slideUp(200, function() {
+                    $(this).alert('close');
+                });
+            </script>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Define o formulário para adicionar um novo produto -->
+    <form action="{{ url_for('novo_produto') }}" method="POST" autocomplete='off'>
+        <!-- Define o campo para inserir a descrição do produto -->
+        <div class='mb-3'>
+            <label for='descricao' class='form-label'>Descrição</label>
+            <input class='form-control' type='text' name='descricao' id='descricao' placeholder='Informe a descricao do produto' required autofocus />
+        </div>
+
+        <!-- Define o campo para inserir o preço do produto -->
+        <div class='mb-3'>
+            <label for='preco' class='form-label'>Preço</label>
+            <input class='form-control' type='text' name='preco' id='preco' placeholder='Informe o preço do produto' required />
+        </div>
+
+        <!-- Define o botão para enviar o formulário -->
+        <div class='mb-3'>
+            <button type='submit' class='btn btn-primary mb-3'>Cadastrar</button>
+        </div>
+    </form>
+
+    <!-- Define o cabeçalho para a lista de produtos -->
+    <h3>Produtos Cadastrados</h3>
+
+    <!-- Define a tabela para mostrar os produtos cadastrados -->
+    <table class="table">
+        <!-- Define o cabeçalho da tabela -->
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <!-- Define o corpo da tabela -->
+        <tbody>
+            <!-- Loop para cada produto na lista de produtos -->
+            {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto.id }}</td>
+                    <td>{{ produto.descricao }}</td>
+                    <td>{{ produto.preco }}</td>
+                    <!-- Verifica se o status do produto é 1 (ativo), caso contrário, o status é 0 (inativo) -->
+                    <td>{{ 'Ativo' if produto.status == 1 else 'Desativado' }}</td>
+                    <td>
+                        <!-- Link para a rota atualizar_produto, passando o id e o status do produto -->
+                        <a href="{{ url_for('atualizar_produto', id=produto.id, status=1 if produto.status==0 else 0) }}" class="btn btn-warning btn-sm">
+                            <!-- Verifica se o status do produto é 0 (inativo), caso contrário, o status é 1 (ativo) -->
+                            {{ 'Ativar' if produto.status==0 else 'Desativar' }}
+                        </a>
+                        <!-- Link para a rota editar_produto, passando o id do produto -->
+                        <a href="{{ url_for('editar_produto', id=produto.id) }}" class="btn btn-primary btn-sm">Editar</a>
+                        <!-- Link para a rota deletar_produto, passando o id do produto -->
+                        <a href="{{ url_for('deletar_produto', id=produto.id) }}" class="btn btn-danger btn-sm">Deletar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

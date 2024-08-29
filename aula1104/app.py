@@ -138,14 +138,16 @@ def novo_cliente():
             clientes = Clientes.get_clientes()  # Obtém todos os clientes do banco de dados
             return render_template('cliente/index_cliente.html', clientes=clientes)  # Renderiza o template novo_cliente.html com os clientes'''
 
-        cliente = Clientes(nome=nome, cpf=cpf, logradouro=logradouro, numero=numero, complemento=complemento,
-                            bairro=bairro, cep=cep, cidade=cidade, uf=uf, telefone=telefone, email=email)  # Cria uma nova instância do cliente
-        cliente.salvar()  # Salva o cliente no banco de dados
-        flash('Cliente adicionado com sucesso!')  # Mensagem de sucesso
+    try:
+            cliente = Clientes(nome=nome, cpf=cpf, logradouro=logradouro, numero=numero, complemento=complemento,
+                                bairro=bairro, cep=cep, cidade=cidade, uf=uf, telefone=telefone, email=email)
+            cliente.salvar()  # Salva o cliente no banco de dados
+            flash('Cliente adicionado com sucesso!', 'success')  # Mensagem de sucesso
+            return redirect(url_for('index_clientes'))  # Redireciona para a lista de clientes
+    except ValueError as e:
+            flash(f'Erro: {e}', 'error')  # Mensagem de erro
 
-    clientes = Clientes.get_clientes()  # Obtém todos os clientes do banco de dados
-    return render_template('cliente/novo_cliente.html', clientes=clientes)  
-
+    return render_template('cliente/novo_cliente.html')  
 
 # Renderiza o template novo_cliente.html com os clientes
 @app.route('/cliente/editar/<int:id>', methods=['GET', 'POST'])

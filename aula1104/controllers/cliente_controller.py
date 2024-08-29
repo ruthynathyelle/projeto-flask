@@ -9,7 +9,7 @@ cliente_blueprint = Blueprint('cliente', __name__)
 def index():
     # Consultar todos os clientes
     clientes = Clientes.query.all()  # Assumindo que você está usando SQLAlchemy, ajuste conforme necessário
-    return render_template('clientes/index.html', clientes=clientes)
+    return render_template('cliente/novo_cliente.html', clientes=clientes)
 
 # Rota para adicionar um novo cliente
 @cliente_blueprint.route("/clientes/novo", methods=['GET', 'POST'])
@@ -33,11 +33,13 @@ def novo_cliente():
         # Salvando o cliente no banco de dados
         cliente.salvar()
         flash('Cliente cadastrado com sucesso!', 'success')
-        return redirect(url_for('cliente.index'))
+        return redirect(url_for('cliente/novo_cliente.html',))
     
     except ValueError as e:
-        flash(str(e), 'error')  
-        return render_template('clientes/novo.html') 
+            flash(f'Erro: {e}', 'error')
+
+    clientes = Clientes.get_clientes()
+    return render_template('cliente/novo_cliente.html', clientes=clientes, **request.form)
 # Rota para atualizar um cliente
 @cliente_blueprint.route("/clientes/atualiza/<int:id>", methods=['GET', 'POST'])
 def atualiza_cliente(id):
